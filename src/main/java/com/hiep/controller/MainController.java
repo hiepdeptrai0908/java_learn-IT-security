@@ -90,8 +90,7 @@ public class MainController {
 
 				// データベースにINSERTする
 				userMapper.createUser(user);
-				return "create-user";
-//				return "redirect:/login";
+				return "redirect:/login";
 			}
 		}
 	}
