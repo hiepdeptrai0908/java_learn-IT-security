@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/style.css}">
+	<title>IT 日本語</title>
+</head>
+
+<body>
+    <div class="containerr">
+        <div class="content">
+            <h1>Edit Vocabulary</h1>
+            <form th:action="@{do-edit-vocabulary}" th:object="${editVocabularyModel}" method="post">
+            	<input type="hidden" th:field="*{id}">
+                <div class="content-item">
+                    <label for="" class="content-item-text">ベトナム語</label>
+                    <input type="text" th:field="*{vietnam}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <label for="" class="content-item-text">日本語</label>
+                    <input type="text" th:field="*{japan}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <label for="" class="content-item-text">英語</label>
+                    <input type="text" th:field="*{english}" placeholder="" class="content-item-input">
+                </div>
+                
+                <div class="content-item">
+                    <label for="" class="content-item-text">呼び方</label>
+                    <input type="text" th:field="*{read}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <label for="" class="content-item-text">例</label>
+                    <input type="text" th:field="*{example}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <button type="submit" class="create-btn">確認</button>
+                </div>
+
+                <div class="content-item">
+                    <div>戻る ｜<a href="" class="content-item-link"> HOME ページ へ</a></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

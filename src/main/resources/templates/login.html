@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/style.css}">
+	<title>IT 日本語</title>
+</head>
+
+<body>
+	<div class="containerr">
+		<div class="content content-login">
+			<form th:action="@{check}" method="post">
+				<h1 class="heading-login">LOGIN</h1>
+				<div th:if="${errorMessengeLogin}" th:text="${errorMessengeLogin}"
+					class="error-messenge error-messenge--login"></div>
+
+				<div class="content-item">
+					<label for="email" class="content-item-text">Email</label>
+					<input id="email" name="email" type="text" placeholder="Enter your Email"
+						class="content-item-input content-item-input--login">
+				</div>
+				<br />
+
+				<div class="content-item">
+					<label for="password" class="content-item-text">Password</label>
+					<input id="password" name="password" type="text" placeholder="Enter your Password"
+						class="content-item-input content-item-input--login">
+				</div>
+				<br />
+
+				<div class="content-item">
+					<button type="submit" class="create-btn">ログイン</button>
+				</div>
+
+				<div class="content-item">
+					<div>アカウントがありません ｜<a th:href="@{/create-user}" class="content-item-link"> 新規登録へ</a></div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+	<script>
+		const errorMessElementLogin = document.querySelectorAll('.error-messenge--login')
+		const contentItemInputLogin = document.querySelector('.content-item-input--login')
+
+		contentItemInputLogin.oninput = function () {
+			if (errorMessElementLogin) {
+				errorMessElementLogin.forEach(function (item) {
+					item.remove()
+				})
+			}
+		}
+	</script>
+</body>
+
+</html>

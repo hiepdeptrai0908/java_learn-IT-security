@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/style.css}">
+	<title>IT 日本語</title>
+</head>
+
+<body>
+    <div class="containerr">
+        <div class="content">
+            <h1>New Vocabulary</h1>
+            <form th:action="@{do-add-vocabulary}" th:object="${addVocabularyModel}" method="post">
+                <div class="content-item">
+                    <label for="" class="content-item-text">ベトナム語</label>
+                    <input type="text" th:field="*{vietnam}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <label for="" class="content-item-text">日本語</label>
+                    <input type="text" th:field="*{japan}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <label for="" class="content-item-text">英語</label>
+                    <input type="text" th:field="*{english}" placeholder="" class="content-item-input">
+                </div>
+                
+                <div class="content-item">
+                    <label for="" class="content-item-text">読み方</label>
+                    <input type="text" th:field="*{read}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <label for="" class="content-item-text">例</label>
+                    <input type="text" th:field="*{example}" placeholder="" class="content-item-input">
+                </div>
+
+                <div class="content-item">
+                    <button type="submit" class="create-btn">追加</button>
+                </div>
+
+                <div class="content-item">
+                    <div>戻る ｜<a th:href="@{/home}" class="content-item-link"> HOME ページ へ</a></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

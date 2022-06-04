@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/style.css}">
+	<title>IT 日本語</title>
+</head>
+
+<body>
+	<div class="containerr">
+		<div class="content">
+			<h1>新規登録</h1>
+			<div class="content-item">
+				<label for="" class="content-item-text">郵便番号</label>
+				<div class="search-box">
+					<input type="text" placeholder="郵便番号" class="content-item-input content-item-input-search"
+						maxlength="7">
+					<button class="btn-search">検索</button>
+				</div>
+			</div>
+			<form th:action="@{do-create-user}" th:object="${userModel}" method="post">
+				<input type="hidden" th:field="*{zipcode}" class="add-zipcode">
+
+				<div class="content-item">
+					<label for="" class="content-item-text">住所 1</label>
+					<input type="text" th:field="*{address1}" placeholder="県、市、区"
+						class="content-item-input address12Api">
+				</div>
+
+				<div class="content-item">
+					<label for="" class="content-item-text">住所 2</label>
+					<input type="text" th:field="*{address2}" placeholder="マンション名、部屋番号"
+						class="content-item-input address3Api">
+				</div>
+
+				<div class="content-item">
+					<label for="email" class="content-item-text">Email</label>
+					<p th:if="${errorMessengeEmail}" th:text="${errorMessengeEmail}"
+						class="error-messenge error-messenge--email"></p>
+					<input id="email" th:field="*{email}" type="text" placeholder="Enter your Email"
+						class="content-item-input content-item-input--email">
+				</div>
+
+				<div class="content-item">
+					<label for="password" class="content-item-text">Password</label>
+					<p th:if="${errorMessengePassword1}" th:text="${errorMessengePassword1}"
+						class="error-messenge error-messenge--password"></p>
+					<p th:if="${errorMessengePassword2}" th:text="${errorMessengePassword2}"
+						class="error-messenge error-messenge--password"></p>
+					<input id="password" th:field="*{password}" type="text" placeholder="Enter your Password"
+						class="content-item-input content-item-input--password">
+				</div>
+
+				<div class="content-item">
+					<button type="submit" class="create-btn">登録</button>
+				</div>
+
+				<div class="content-item">
+					<div>アカウントがありました！ ｜<a th:href="@{/login}" class="content-item-link"> LOGIN へ</a></div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+	<script>
+
+		const searchBtn = document.querySelector('.btn-search')
+		const zipcodeText = document.querySelector('.content-item-text')
+		const zipcodeInput = document.querySelector('.content-item-input-search')
+		const address12ApiElement = document.querySelector('.address12Api')
+		const address3ApiElement = document.querySelector('.address3Api')
+		const addZipcode = document.querySelector('.add-zipcode')
+		const errorMessElementEmail = document.querySelector('.error-messenge--email')
+		const contentItemInputEmail = document.querySelector('.content-item-input--email')
+		const errorMessElementPassword = document.querySelectorAll('.error-messenge--password')
+		const contentItemInputPassword = document.querySelector('.content-item-input--password')
+
+		zipcodeInput.oninput = function () {
+			zipcodeText.textContent = '郵便番号'
+			addZipcode.value = zipcodeInput.value
+		}
+
+		contentItemInputEmail.oninput = function () {
+			if (errorMessElementEmail) {
+				errorMessElementEmail.remove()
+			}
+		}
+
+		contentItemInputPassword.oninput = function () {
+			if (errorMessElementPassword) {
+				errorMessElementPassword.forEach(function (item) {
+					item.remove()
+				})
+			}
+		}
+
+		searchBtn.onclick = () => {
+			const zipcodeUrl = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode='
+
+			fetch(zipcodeUrl + zipcodeInput.value)
+				.then(response => response.json())
+				.then(datas => datas.results)
+				.then(results => {
+					console.log(results);
+					const htmls = results.map(result => {
+						address12ApiElement.value = `${result.address1}${result.address2}`
+						address3ApiElement.value = `${result.address3}`
+					})
+				})
+				.catch(function () {
+					let span = document.createElement('div');
+					span.innerHTML = '<span class="error-messenge">郵便番号が正しくありません！</span>';
+
+					zipcodeText.appendChild(span);
+				})
+		}
+	</script>
+</body>
+
+</html>

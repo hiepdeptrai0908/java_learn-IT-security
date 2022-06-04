@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hiep.mapper.UserMapper">
+
+	<select id="selectByEmail" resultType="com.hiep.entity.AppUserEntity">
+		SELECT * FROM hiep_it_user where email = #{email}
+	</select>
+	
+	<select id="checkEmail" resultType="int">
+		SELECT COUNT(email) FROM hiep_it_user where email = #{getEmail}
+	</select>
+
+	<insert id="createUser">
+		INSERT INTO hiep_it_user(email, password, zipcode, address1, address2) VALUES
+		(#{email}, #{password}, #{zipcode}, #{address1}, #{address2})
+	</insert>
+
+</mapper>

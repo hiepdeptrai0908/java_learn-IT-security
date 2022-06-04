@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hiep.mapper.LanguageMapper">
+
+	<select id="getListVocabulary"
+		resultType="com.hiep.entity.LanguageEntity">
+		select * from hiep_it_language order by id asc
+	</select>
+
+	<insert id="addVocabulary">
+		INSERT INTO hiep_it_language(japan, read, vietnam,
+		english, example, create_date) VALUES
+		(#{japan}, #{read}, #{vietnam},
+		#{english}, #{example}, #{create_date})
+	</insert>
+
+	<delete id="deleteVocabularyById">
+		DELETE FROM hiep_it_language WHERE id=#{id}
+	</delete>
+
+	<update id="editVocabulary">
+		UPDATE hiep_it_language
+		SET vietnam = #{vietnam}, read = #{read}, japan = #{japan}, english = #{english}, example = #{example}
+		WHERE id=#{id}
+	</update>
+
+	<select id="searchVocabulary"
+		resultType="com.hiep.entity.LanguageEntity">
+		select * from hiep_it_language
+		<if test="searchValue != ''">
+			<where>
+				vietnam LIKE CONCAT('%', #{searchValue}, '%')
+				or japan LIKE CONCAT('%', #{searchValue}, '%')
+				or read LIKE CONCAT('%', #{searchValue}, '%')
+				or english LIKE CONCAT('%', #{searchValue}, '%')
+				or example LIKE CONCAT('%', #{searchValue}, '%')
+			</where>
+		</if>
+	</select>
+
+</mapper>
