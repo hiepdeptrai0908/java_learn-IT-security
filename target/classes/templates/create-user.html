@@ -38,7 +38,9 @@
 
 				<div class="content-item">
 					<label for="email" class="content-item-text">Email</label>
-					<p th:if="${errorMessengeEmail}" th:text="${errorMessengeEmail}"
+					<p th:if="${errorMessengeFormatEmail}" th:text="${errorMessengeFormatEmail}"
+						class="error-messenge error-messenge--email"></p>
+					<p th:if="${errorMessengeAlreadyEmail}" th:text="${errorMessengeAlreadyEmail}"
 						class="error-messenge error-messenge--email"></p>
 					<input id="email" th:field="*{email}" type="text" placeholder="Enter your Email"
 						class="content-item-input content-item-input--email">
@@ -50,7 +52,7 @@
 						class="error-messenge error-messenge--password"></p>
 					<p th:if="${errorMessengePassword2}" th:text="${errorMessengePassword2}"
 						class="error-messenge error-messenge--password"></p>
-					<input id="password" th:field="*{password}" type="text" placeholder="Enter your Password"
+					<input id="password" th:field="*{password}" type="password" placeholder="Enter your Password"
 						class="content-item-input content-item-input--password">
 				</div>
 

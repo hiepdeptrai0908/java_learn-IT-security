@@ -1,6 +1,7 @@
 package com.hiep.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.ResultSetSupportingSqlParameter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.hiep.mapper.UserMapper;
 import com.hiep.model.UserModel;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/")
+@Slf4j
 public class MainController {
 
 	@Autowired
@@ -58,16 +62,22 @@ public class MainController {
 		int result = userMapper.checkEmail(getEmail);
 
 		// Regular Expression
-		String regexEmail = "/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/";
-		String regexPassword = "/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/";
+		String regexEmail = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+		String regexPassword = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
+		Boolean formatEmail = getEmail.matches(regexEmail);
+		Boolean formatPassword = getPassword.matches(regexPassword);
+		
+		log.info("format email:{}", formatEmail);
+		log.info("format password:{}", formatPassword);
+		
 
 		// Check Format Email
-		if (!(getEmail.equals(regexEmail))) {
+		if (formatEmail == false) {
 			model.addAttribute("userModel", new UserModel());
-			model.addAttribute("errorMessengeEmail", "メールの定型フォーマットが正しくない！");
+			model.addAttribute("errorMessengeFormatEmail", "メールの定型フォーマットが正しくない！");
 
 			// Check Password
-			if (!(getPassword.equals(regexPassword))) {
+			if (formatPassword == false) {
 				model.addAttribute("errorMessengePassword1", "パスワードの定型フォーマットが正しくない！");
 				model.addAttribute("errorMessengePassword2", "(8桁以上の大文字と小文字と数字を入力してください！)");
 			}
@@ -76,8 +86,12 @@ public class MainController {
 
 			// メールを復唱するかどうかのチェック！
 			if (result > 0) {
+				if (formatPassword == false) {
+					model.addAttribute("errorMessengePassword1", "パスワードの定型フォーマットが正しくない！");
+					model.addAttribute("errorMessengePassword2", "(8桁以上の大文字と小文字と数字を入力してください！)");
+				}
 				model.addAttribute("userModel", new UserModel());
-				model.addAttribute("errorMessenge", "このメールアドレスはすでに使いました！");
+				model.addAttribute("errorMessengeAlreadyEmail", "このメールアドレスはすでに使いました！");
 				return "create-user";
 			} else {
 				UserModel user = new UserModel();
