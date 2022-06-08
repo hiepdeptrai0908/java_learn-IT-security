@@ -1,6 +1,7 @@
 package com.hiep.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.ResultSetSupportingSqlParameter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hiep.mapper.UserMapper;
-import com.hiep.message.ErMessage;
 import com.hiep.model.UserModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class MainController {
 
 	// 新規ユーザーの作成を処理する
 	@PostMapping("do-create-user")
-	private String doCreateUser(UserModel userModel, ErMessage erMessage) {
+	private String doCreateUser(UserModel userModel, Model model) {
 
 		String getEmail = userModel.getEmail();
 		String getPassword = userModel.getPassword();
@@ -73,12 +73,13 @@ public class MainController {
 
 		// Check Format Email
 		if (formatEmail == false) {
-			erMessage.err.add(ErMessage.erEmailHs);
+			model.addAttribute("userModel", new UserModel());
+			model.addAttribute("errorMessengeFormatEmail", "メールの定型フォーマットが正しくない！");
 
 			// Check Password
 			if (formatPassword == false) {
-				erMessage.err.add(ErMessage.erPwHs);
-				erMessage.err.add(ErMessage.erPwLen);
+				model.addAttribute("errorMessengePassword1", "パスワードの定型フォーマットが正しくない！");
+				model.addAttribute("errorMessengePassword2", "(8桁以上の大文字と小文字と数字を入力してください！)");
 			}
 			return "create-user";
 		} else {
@@ -86,10 +87,11 @@ public class MainController {
 			// メールを復唱するかどうかのチェック！
 			if (result > 0) {
 				if (formatPassword == false) {
-					erMessage.err.add(ErMessage.erPwHs);
-					erMessage.err.add(ErMessage.erPwLen);
+					model.addAttribute("errorMessengePassword1", "パスワードの定型フォーマットが正しくない！");
+					model.addAttribute("errorMessengePassword2", "(8桁以上の大文字と小文字と数字を入力してください！)");
 				}
-				erMessage.err.add(ErMessage.erEmailDbCheck);
+				model.addAttribute("userModel", new UserModel());
+				model.addAttribute("errorMessengeAlreadyEmail", "このメールアドレスはすでに使いました！");
 				return "create-user";
 			} else {
 				UserModel user = new UserModel();
